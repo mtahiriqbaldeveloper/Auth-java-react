@@ -7,13 +7,24 @@ const Signup = (props) => {
     const [validated, setValidated] = useState(false);
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         const form = event.currentTarget;
+
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
         } else {
-            event.preventDefault();
-            fetch('YOUR_URL')
+            const formData = new FormData(form);
+            // data variable structure =  {fullName:VALUE, email: VALUE, password: VALUE}
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('YOUR_URL',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -39,17 +50,17 @@ const Signup = (props) => {
                     <h2>SignUp</h2>
                     <Form.Group className="mb-3" controlId="fullName">
                         <Form.Label >Full Name</Form.Label>
-                        <Form.Control required type="text" placeholder="Enter Full Name" />
+                        <Form.Control name='fullName' required type="text" placeholder="Enter Full Name" />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="emailAddress">
                         <Form.Label >Email address</Form.Label>
-                        <Form.Control required type="email" placeholder="Enter email" />
+                        <Form.Control name='emailAddress' required type="email" placeholder="Enter email" />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="password">
                         <Form.Label >Password</Form.Label>
-                        <Form.Control required type="password" placeholder="Password" />
+                        <Form.Control name='password' required type="password" placeholder="Password" />
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
