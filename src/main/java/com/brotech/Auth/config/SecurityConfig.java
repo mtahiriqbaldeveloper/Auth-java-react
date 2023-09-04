@@ -16,25 +16,31 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Configuration class for Spring Security.
+ */
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-
+    /**
+     * configure the cors and which
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize->authorize.requestMatchers("/v1/auth/**").permitAll().anyRequest().authenticated());
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/v1/auth/**").permitAll().anyRequest().authenticated());
         return httpSecurity.build();
 
     }
 
     /**
-     * configure the cors origin incoming requests
+     * Configure the CORS (Cross-Origin Resource Sharing) policy.
+     *
+     * @return CorsConfigurationSource
      */
-
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -47,7 +53,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

@@ -1,5 +1,6 @@
 package com.brotech.Auth.expection;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,18 +11,19 @@ import java.util.Date;
 
 
 @ControllerAdvice
+@Slf4j
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request){
+    public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
 
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND.value(),new Date(),ex.getMessage(),request.getDescription(false));
+        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND.value(), new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex, WebRequest request){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(),new Date(),ex.getMessage(),request.getDescription(false));
+    public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex, WebRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

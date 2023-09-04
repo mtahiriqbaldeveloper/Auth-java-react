@@ -14,12 +14,13 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private List<String> roles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.<GrantedAuthority>of(new SimpleGrantedAuthority("ALL"));
     }
 
-    public List<String> getRoles(){
+    public List<String> getRoles() {
         List<GrantedAuthority> authRoles = List.of(new SimpleGrantedAuthority("ALL"));
         roles = authRoles.stream().map(GrantedAuthority::getAuthority).toList();
         return roles;
