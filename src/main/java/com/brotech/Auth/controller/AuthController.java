@@ -34,8 +34,7 @@ public class AuthController {
 
     @PostMapping("signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid Account account) {
-        accountService.saveAccount(account);
-        return new ResponseEntity<>(account, HttpStatus.CREATED);
+        return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.CREATED);
     }
     @PostMapping("login")
     public ResponseEntity<?> logIn(@RequestBody @Valid Login login){
