@@ -21,12 +21,21 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AccountService accountService;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtils jwtUtils;
 
 
     @PostMapping("signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid Account account) {
         accountService.saveAccount(account);
         return new ResponseEntity<>(account, HttpStatus.CREATED);
+    }
+    @PostMapping("login")
+    public ResponseEntity<?> logIn(@RequestBody @Valid Login login){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtils.generateToken(authentication);
+        return new ResponseEntity<>(token, HttpStatus.ACCEPTED);
     }
 
 }
