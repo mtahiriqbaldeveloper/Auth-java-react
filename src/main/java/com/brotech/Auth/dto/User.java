@@ -1,6 +1,6 @@
 package com.brotech.Auth.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,22 +8,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@AllArgsConstructor
-public class User implements UserDetails {
+@RequiredArgsConstructor
+public final class User implements UserDetails {
 
-    private String email;
-    private String password;
-    private List<String> roles;
+    private final String email;
+    private final String password;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.<GrantedAuthority>of(new SimpleGrantedAuthority("ALL"));
-    }
-
-    public List<String> getRoles() {
-        List<GrantedAuthority> authRoles = List.of(new SimpleGrantedAuthority("ALL"));
-        roles = authRoles.stream().map(GrantedAuthority::getAuthority).toList();
-        return roles;
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ALL");
+        return List.of(grantedAuthority);
     }
 
     @Override
