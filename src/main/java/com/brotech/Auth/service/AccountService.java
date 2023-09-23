@@ -11,15 +11,16 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class AccountService implements UserDetailsService {
 
     private final AccountRepo accountRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Account account = accountRepo.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("user not found"));
+        return new User(account.getEmail(),account.getPassword());
     }
 
     public Account saveAccount(Account account) {
